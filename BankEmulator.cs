@@ -8,30 +8,63 @@ namespace MessAroundConsole
 {
     class BankAccount
     {
+        // This is a simple definition of a type, or class, of object
+        // that represents a bank account.  You can think of an object
+        // as a collection of related functions and data.
+
+        // These are the data members of the class.  They are called
+        // "fields".  One is public, and it is for storing the name of
+        // the account holder.  The other is private, and that is for
+        // storing the current balance of the account.
         public string holder;
         private int balance;
 
+
+        // Now here are the function members of the class, and they
+        // are called "methods".
         public BankAccount()
         {
+            // This method that has the same name as the class
+            // is a special function called the "constructor".  It
+            // is called whenever a new object of this type or class
+            // is created.  It is a good place to initialize the fields.
             holder = "-Unkown-";
             balance = 0;
         }
         public BankAccount(string newHolder)
         {
+            // Wait a second, didn't I just create a method with
+            // this same name?  This is an example of one of the
+            // neat things you can do with a class called "overloading".
+            // You can define more than one method with the same name
+            // but as long as they have different parameters, it is ok
+            // because the compiler can tell the difference.
             holder = newHolder;
+            balance = 0;
         }
         public BankAccount(string newHolder, int initialBalance)
         {
+            // Wow, yet another constructor method!  Having multiple
+            // constructors allows the programmer freedom to create objects
+            // in different ways.  In this one, I allow both the name
+            // of the account holder and the initial balance to be set.
             holder = newHolder;
             balance = initialBalance;
         }
         public string PrintBalance()
         {
+            // This method returns a string with a message that tells the
+            // user their current balance.  The calling program cannot
+            // see the balance directly because it is a private field,
+            // but this method can since it is part of the class.
             string str = String.Format("{0}, your account balance is {1:C}", holder, balance);
             return str;
         }
         public bool Withdraw(int withdrawal)
         {
+            // This method does a withdrawal, and it returns a bool value
+            // which is simply either true or false to indicate if the
+            // withdrawal was successful or not.
             if (withdrawal > balance)
             {
                 Console.WriteLine();
@@ -47,6 +80,8 @@ namespace MessAroundConsole
         }
         public void Deposit(int deposit)
         {
+            // This method just does a simple deposit and it
+            // does not return any value.
             balance = balance + deposit;
             Console.WriteLine("DEPOSIT COMPLETE");
         }
