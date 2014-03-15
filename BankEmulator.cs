@@ -109,7 +109,9 @@ namespace MessAroundConsole
             // We are going to create a new object of the BankAccount class that we defined 
             // up above.  We will use one of the constructors to set both the name of the
             // account holder and the balance at the same time.
-            BankAccount account = new BankAccount(name, yourBalance); 
+            int currentAcct = 0;
+            BankAccount[] accounts = new BankAccount[10];
+            accounts[currentAcct] = new BankAccount(name, yourBalance);
 
             // Here we start our program loop so that it keeps running as it will always 
             // return true. Below we give an option for the user to choose which breaks
@@ -117,24 +119,28 @@ namespace MessAroundConsole
             while (true)
             {
                 Console.WriteLine();
+                Console.WriteLine("HELLO, {0}", accounts[currentAcct].holder);
+                Console.WriteLine();
                 Console.WriteLine("CHECK BALANCE (1)");
                 Console.WriteLine("WITHDRAW MONEY (2)");
                 Console.WriteLine("DEPOSIT MONEY (3)");
-                Console.WriteLine("EXIT (4)");
+                Console.WriteLine("USE ANOTHER ACCOUNT (4)");
+                Console.WriteLine("CREATE NEW ACCOUNT (5)");
+                Console.WriteLine("EXIT (0)");
                 Console.WriteLine();
-                Console.Write("WHAT WOULD YOU LIKE TO DO (1, 2, 3 or 4): ");
+                Console.Write("WHAT WOULD YOU LIKE TO DO (1, 2, 3, 4, 5, or 0): ");
                 int yourChoice = Int32.Parse(Console.ReadLine());
 
                 if (yourChoice == 1)
                 {
-                    CheckBalance(account); // This sends our object which was created 
+                    CheckBalance(accounts[currentAcct]); // This sends our object which was created 
                     // above to a function called CheckBalance that
                     // is written below
                 }
 
                 if (yourChoice == 2)
                 {
-                    Withdraw(account); // This is slightly different to the one
+                    Withdraw(accounts[currentAcct]); // This is slightly different to the one
                     // above as this one sends our object to 
                     // the function called Withdraw that is written below. The function
                     // doesn't return anything.  The balance is updated internally inside
@@ -143,12 +149,26 @@ namespace MessAroundConsole
 
                 if (yourChoice == 3)
                 {
-                    Deposit(account); // Does the same thing as documented for
+                    Deposit(accounts[currentAcct]); // Does the same thing as documented for
                     // withdraw excepts sends it to a different
                     // function / method
                 }
 
-                if (yourChoice == 4)
+                if(yourChoice == 4)
+                {
+                    currentAcct = ChooseAccount(accounts);
+                }
+
+                if(yourChoice == 5)
+                {
+                    int temp = CreateAccount(accounts);
+                    if (temp >= 0)
+                    {
+                        currentAcct = temp;
+                    }
+                }
+
+                if (yourChoice == 0)
                 {
                     break; // Ends the program
                 }
@@ -230,7 +250,47 @@ namespace MessAroundConsole
             acct.Deposit(depositAmnt);
         }
 
+        static int ChooseAccount(BankAccount[] accounts)
+        {
+            Console.WriteLine();
+            for (int i = 0; i<10; i++)
+            {
+                if (accounts[i] != null)
+                {
+                    Console.WriteLine("{0} - {1}", i, accounts[i].holder);
+                }
+            }
+            Console.Write("\nChoose an account to use: ");
+            return Convert.ToInt32(Console.ReadLine());
+        }
 
+        static int CreateAccount(BankAccount[] accounts)
+        {
+            bool IsEmpty = false;
+            int i;
+            for ( i = 0; i < 10; i++)
+            {
+                if (accounts[i] == null)
+                {
+                    IsEmpty = true;
+                    break;
+                }
+            }
+            if (IsEmpty )
+            {
+                Console.Write("WHO IS THE ACCOUNT HOLDER? ");
+                string name = Console.ReadLine();
+                Console.Write("HOW MUCH MONEY WOULD YOU LIKE IN YOUR ACCOUNT: ");
+                int yourBalance = Int32.Parse(Console.ReadLine()); // Sets our starting balance
+                accounts[i] = new BankAccount(name, yourBalance);
+                return i;
+            }
+            else
+            {
+                Console.WriteLine("\nSorry, there is no more room left in the bank.");
+                return -1;
+            }
+        }
 
     }
 }
